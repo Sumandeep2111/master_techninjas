@@ -1,8 +1,10 @@
 package com.example.project_techninjas_android;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseNotes extends SQLiteOpenHelper {
 
@@ -41,6 +43,20 @@ public class DatabaseNotes extends SQLiteOpenHelper {
             return;
         db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
         onCreate(db);
+
+    }
+
+    public long addNote(Note note){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_TITLE,note.getTitle());
+        contentValues.put(KEY_CONTENT,note.getContent());
+        contentValues.put(KEY_DATE,note.getDate());
+        contentValues.put(KEY_TIME,note.getTime());
+
+        long ID = db.insert(DATABASE_TABLE,null,contentValues);
+        Log.d("Insert data","ID -> "+ ID);
+        return ID;
 
     }
 }
