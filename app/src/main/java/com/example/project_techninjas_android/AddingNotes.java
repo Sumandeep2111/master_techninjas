@@ -87,6 +87,7 @@ public class AddingNotes extends AppCompatActivity {
 //            startActivity(intent);
 
             Toast.makeText(this,"delete button is Clicked",Toast.LENGTH_SHORT).show();
+            onBackPressed();
         }
         if (item.getItemId() == R.id.save){
             Note note = new Note(notetitle.getText().toString(),notedetail.getText().toString(),todaysDate,currentTime);
@@ -94,10 +95,19 @@ public class AddingNotes extends AppCompatActivity {
             db.addNote(note);
 
             Toast.makeText(this,"save button is Clicked",Toast.LENGTH_SHORT).show();
+            goToMain();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void goToMain() {
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

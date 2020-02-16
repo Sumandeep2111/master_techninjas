@@ -2,15 +2,19 @@ package com.example.project_techninjas_android;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DatabaseNotes extends SQLiteOpenHelper {
 
     private  static  final int DATABASE_VERSION = 2;
-    private static final String DATABASE_NAME = "noteDB";
-    private static final String DATABASE_TABLE = "tablenotes";
+    private static final String DATABASE_NAME = "DBnotes";
+    private static final String DATABASE_TABLE = "notesTable";
 
     //column name for database table
     private static final String KEY_ID = "id";
@@ -23,6 +27,7 @@ public class DatabaseNotes extends SQLiteOpenHelper {
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
 
     }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -55,8 +60,48 @@ public class DatabaseNotes extends SQLiteOpenHelper {
         contentValues.put(KEY_TIME,note.getTime());
 
         long ID = db.insert(DATABASE_TABLE,null,contentValues);
-        Log.d("Insert data","ID -> "+ ID);
+        Log.d("inserted","ID -> "+ ID);
         return ID;
+
+    }
+
+  public Note  getNote(long id) {
+        //select * from databaseTable where id = 1
+      SQLiteDatabase db = this.getReadableDatabase();
+      Cursor cursor = db.query(DATABASE_TABLE,new String[]{KEY_ID,KEY_TITLE,KEY_CONTENT,KEY_DATE,KEY_TIME},
+              KEY_ID+"=?",new String[]{String.valueOf(id)},null,null,null);
+      if (cursor != null)
+          cursor.moveToFirst();
+
+
+      return new Note(cursor.getLong(0),cursor.getString(1),cursor.getString(2),
+              cursor.getString(3),cursor.getString(4));
+
+
+    }
+
+   public List<Note> getNotes() {
+       SQLiteDatabase db = this.getReadableDatabase();
+       List<Note> allNotes = new ArrayList<>();
+       //select * from databasename
+       String query = "SELECT * FROM "+DATABASE_TABLE;
+       Cursor cursor = db.rawQuery(query,null);
+       if (cursor.moveToFirst()){
+           do {
+              Note note = new Note();
+              note.setId(cursor.getLong(0));
+              note.setTitle(cursor.getString(1));
+              note.setContent(cursor.getString(2));
+              note.setDate(cursor.getString(3));
+              note.setTime(cursor.getString(4));
+
+              allNotes.add(note);
+
+
+
+           }while (cursor.moveToNext());
+       }
+       return allNotes;
 
     }
 }
