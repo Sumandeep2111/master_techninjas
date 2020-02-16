@@ -51,7 +51,7 @@ public class DatabaseNotes extends SQLiteOpenHelper {
 
     }
 
-    public long addNote(Note note){
+    public Long addNote(Note note){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_TITLE,note.getTitle());
@@ -59,13 +59,13 @@ public class DatabaseNotes extends SQLiteOpenHelper {
         contentValues.put(KEY_DATE,note.getDate());
         contentValues.put(KEY_TIME,note.getTime());
 
-        long ID = db.insert(DATABASE_TABLE,null,contentValues);
+        Long ID = db.insert(DATABASE_TABLE,null,contentValues);
         Log.d("inserted","ID -> "+ ID);
         return ID;
 
     }
 
-  public Note  getNote(long id) {
+  public Note getNote(Long id) {
         //select * from databaseTable where id = 1
       SQLiteDatabase db = this.getReadableDatabase();
       Cursor cursor = db.query(DATABASE_TABLE,new String[]{KEY_ID,KEY_TITLE,KEY_CONTENT,KEY_DATE,KEY_TIME},
@@ -76,6 +76,7 @@ public class DatabaseNotes extends SQLiteOpenHelper {
 
       return new Note(cursor.getLong(0),cursor.getString(1),cursor.getString(2),
               cursor.getString(3),cursor.getString(4));
+      //cursor.close();
 
 
     }

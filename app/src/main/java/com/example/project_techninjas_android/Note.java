@@ -2,7 +2,7 @@ package com.example.project_techninjas_android;
 
 public class Note {
 
-    private long id;
+    private Long id;
     private String title;
     private String content;
     private String date;
@@ -18,7 +18,7 @@ public class Note {
         this.time = time;
     }
 
-    Note(long id, String title, String content, String date, String time) {
+    Note(Long id, String title, String content, String date, String time) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -26,7 +26,7 @@ public class Note {
         this.time = time;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -46,7 +46,7 @@ public class Note {
         return time;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
